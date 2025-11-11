@@ -1,1 +1,1 @@
-{"tfjsVersion":"1.7.4","tmVersion":"2.4.10","packageVersion":"0.8.4-alpha2","packageName":"@teachablemachine/image","timeStamp":"2025-10-22T07:36:11.894Z","userMetadata":{},"modelName":"tm-my-image-model","labels":["Class 1","Class 2"],"imageSize":224}
+{"tfjsVersion":"1.7.4","tmVersion":"2.4.10","packageVersion":"0.8.4-alpha2","packageName":"@teachablemachine/image","timeStamp":"2025-11-11T06:08:02.072Z","userMetadata":{},"modelName":"tm-my-image-model","labels":["drowning","safe"],"imageSize":224}
