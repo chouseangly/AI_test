@@ -68,6 +68,11 @@
     const URL = "./my_model/";
     let model, webcam, labelContainer, maxPredictions;
 
+    // --- ADDED ---
+    let alarmSound;
+    let isAlarmPlaying = false;
+    // --- END ADDED ---
+
     async function init() {
       const modelURL = URL + "model.json";
       const metadataURL = URL + "metadata.json";
@@ -86,6 +91,12 @@
       for (let i = 0; i < maxPredictions; i++) {
         labelContainer.appendChild(document.createElement("div"));
       }
+
+      // --- ADDED ---
+      // !! IMPORTANT: Replace 'alarm.mp3' with the path to your sound file !!
+      alarmSound = new Audio('alarm.wav');
+      alarmSound.loop = true; // Make the alarm sound loop
+      // --- END ADDED ---
     }
 
     async function loop() {
@@ -94,15 +105,38 @@
       window.requestAnimationFrame(loop);
     }
 
+    // --- MODIFIED FUNCTION ---
     async function predict() {
       const prediction = await model.predict(webcam.canvas);
+      let drowningProbability = 0;
+
       for (let i = 0; i < maxPredictions; i++) {
         const classPrediction =
           prediction[i].className + ": " +
           (prediction[i].probability * 100).toFixed(2) + "%";
         labelContainer.childNodes[i].innerHTML = classPrediction;
+
+        // Store the probability for the "drowning" class
+        if (prediction[i].className === "drowning") {
+          drowningProbability = prediction[i].probability;
+        }
+      }
+
+      // Check the condition and play/pause the sound
+      if (drowningProbability > 0.7) {
+        if (!isAlarmPlaying) {
+          alarmSound.play();
+          isAlarmPlaying = true;
+        }
+      } else {
+        if (isAlarmPlaying) {
+          alarmSound.pause();
+          alarmSound.currentTime = 0; // Rewind sound to the start
+          isAlarmPlaying = false;
+        }
       }
     }
+    // --- END MODIFIED FUNCTION ---
   </script>
 </body>
 </html>
